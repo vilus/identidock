@@ -9,7 +9,7 @@ identidock:
      - redis
 
 dnmonster:
-    image: amount/dnmonster:1.0
+    image: amout/dnmonster:1.0
 
 redis:
     image: redis:3.0
