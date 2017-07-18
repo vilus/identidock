@@ -1,8 +1,10 @@
 import logging
 import hashlib
-from flask import Flask, Response, request
 import requests
 import redis
+import html
+
+from flask import Flask, Response, request
 
 app = Flask(__name__)
 cache = redis.StrictRedis(host='redis', port=6379, db=0)
@@ -13,7 +15,9 @@ salt = 'UNIQUE SALT'
 @app.route('/', methods=['GET', 'POST'])
 def mainpage():
     """todo"""
-    name = request.form['name'] if request.method == 'POST' else default_name
+    name = default_name
+    if request.method == 'POST':
+        name = html.escape(request.form['name'], quote=True)
     salted_name = salt + name
     hashed_name = hashlib.sha256(salted_name.encode()).hexdigest()
     body = '''<html><head><title>Identidock</title></head><body>
@@ -31,6 +35,7 @@ def mainpage():
 @app.route('/monster/<name>')
 def get_identicon(name):
     """todo"""
+    name = html.escape(name, quote=True)
     image = cache.get(name)
     if image is not None:
         return Response(image, mimetype='image/png')
