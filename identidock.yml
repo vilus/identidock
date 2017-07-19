@@ -49,12 +49,12 @@
 
   - name: pull proxy image
     docker_image:
-      name: amouat/proxy:1.0
+      name: vshevchenko/proxy:1.0
 
   - name: proxy container
     docker:
       name: proxy
-      image: amouat/proxy:1.0
+      image: vshevchenko/proxy:1.0
       state: reloaded
       links:
         - "identidock:identidock"
